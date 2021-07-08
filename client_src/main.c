@@ -20,16 +20,14 @@ void	send_char(pid_t pid, char c)
 	int	err;
 
 	i = 0;
-	printf("%d\n", c);
-	printb(c);
 	while (i < 8)
 	{
+		usleep(100);
 		bit = (c >> i) & 1;
 		if (bit == 1)
 			err = kill(pid, SIGUSR1);
 		else
 			err = kill(pid, SIGUSR2);
-		printf("err: %d\n", err);
 		i++;
 	}
 }
@@ -53,6 +51,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 	{
+		write(1, )
 		return (1);
 	}
 	printf("crient pid: %d\n", getpid());
