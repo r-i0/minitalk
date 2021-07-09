@@ -3,13 +3,13 @@ NAME	=	server
 SRC		=	main.c
 OBJ		=	$(SRC:.c=.o)
 
-INCLUDE	=	../include
+INCLUDE	=	../include/
 
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 RM		=	rm -rf
 
-LIBFT_DIR	=	../libft
+LIBFT_DIR	=	../libft/
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
 all	:	$(NAME)
@@ -31,3 +31,6 @@ fclean :
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(RM) $(OBJ) $(NAME)
 
+re : fclean all
+
+.PHONY : all clean fclean re

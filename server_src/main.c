@@ -1,24 +1,37 @@
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "../libft/libft.h"
+#include "../include/minitalk.h"
 
-void	sig_restore(int signal)
+void	print_message(char *buf, int j)
 {
-	static int num;
-	static char c;
-	static int i;
+	ft_putstr_fd(buf, STDOUT_FILENO);
+	if (buf[j] == EOT)
+	{
+		ft_putendl_fd("", STDOUT_FILENO);
+	}
+	ft_bzero(buf, 100);
+}
+
+void	sig_restore(int bit, pid_t client_pid)
+{
+	static char	c;
+	static char	buf[100];
+	static int	i;
+	static int	j;
 
 	if (i < 8)
 	{
-		c += (signal << i);
-		// printf("c: %d\n", c);
+		c += (bit << i);
 		i++;
 	}
 	if (i == 8)
 	{
-		write(1, &c, 1);
+		buf[j] = c;
+		if (buf[j] == EOT || j == 100)
+		{
+			print_message(buf, j);
+			j = -1;
+		}
+		kill(client_pid, SIGUSR1);
+		j++;
 		c = 0;
 		i = 0;
 	}
@@ -26,17 +39,23 @@ void	sig_restore(int signal)
 
 static void	action(int signo, siginfo_t *info, void *c)
 {
-	// printf("si_signo: %d\n", info->si_signo);
-	// printf("si_code: %d\n", info->si_code);
-	// printf("si_value: %d\n", info->si_value.sival_int);
-	// printf("si_pid: %d\n", info->si_pid);
+	static pid_t pid;
+
+	(void)c;
+	if (pid != info->si_pid)
+	{
+		ft_putstr_fd("from ", STDOUT_FILENO);
+		ft_putnbr_fd(info->si_pid, STDOUT_FILENO);
+		ft_putstr_fd(" : ", STDOUT_FILENO);
+		pid = info->si_pid;
+	}
 	if (signo == SIGUSR1)
 	{
-		sig_restore(1);
+		sig_restore(1, info->si_pid);
 	}
 	if (signo == SIGUSR2)
 	{
-		sig_restore(0);
+		sig_restore(0, info->si_pid);
 	}
 }
 
@@ -51,11 +70,11 @@ static void	set_signal(void)
 	sigaction(SIGUSR2, &act, NULL);
 }
 
-void	print_pid(void)
+static void	print_pid(void)
 {
-	ft_putstr_fd("SERVER PID: ", 1);
-	ft_putnbr_fd(getpid(),1);
-	printf("\n");
+	ft_putstr_fd("SERVER PID : ", STDOUT_FILENO);
+	ft_putnbr_fd(getpid(),STDOUT_FILENO);
+	ft_putendl_fd("", STDOUT_FILENO);
 }
 
 int	main(int argc, char **argv)
@@ -63,7 +82,8 @@ int	main(int argc, char **argv)
 	(void)argv;
 	if (argc != 1)
 	{
-		exit(1);
+		ft_putendl_fd("invalid arguments", STDOUT_FILENO);
+		exit(EXIT_FAILURE);
 	}
 	set_signal();
 	print_pid();

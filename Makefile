@@ -1,6 +1,6 @@
-NAME	=	minitalk
-SERVER	=	server
-CLIENT	=	client
+NAME		=	$(SERVER) $(CLIENT)
+SERVER		=	server
+CLIENT		=	client
 
 INCLUDE	=	./include/
 
@@ -10,24 +10,35 @@ LIBFT_DIR	=	./libft
 
 LIBFT	=	$(LIBFT_DIR)/libft.a
 
-SERVER_SRC	=	$(SERVER_DIR)/main.c
-SERVER_OBJ	=	$(SERVER_SRC:.c=.o)
-
-CLIENT_SRC	=	$(CLIENT_DIR)/main.c
-CLIENT_OBJ	=	$(CLIENT_SRC:.c=.o)
-
-CC	=	gcc
+CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
-RM	=	rm -rf
+RM		=	rm -rf
 
 .c.o:
 	$(CC) $(CFLAGS) $(INCDIR) -c $< -o $(<:.c=.o)
 
-$(LIBFT)	:
-	make -C $(LIBFT_DIR)
+all	:	$(NAME)
 
-$(NAME)		:	$(OBJ) $(SERVER) $(CLIENT)
+$(SERVER)	:	$(SERVER_DIR)
+	$(MAKE) -C $(SERVER_DIR)
+	cp $(SERVER_DIR)/$(SERVER) ./
 
-$(SERVER)	:	$(OBJ)
+$(CLIENT)	:	$(CLIENT_DIR)
+	$(MAKE) -C $(CLIENT_DIR)
+	cp $(CLIENT_DIR)/$(CLIENT) ./
+
+clean 	:
+	$(MAKE) -C $(SERVER_DIR) clean
+	$(MAKE) -C $(CLIENT_DIR) clean
+
+fclean	:
+	$(MAKE) -C $(SERVER_DIR) fclean
+	$(MAKE) -C $(CLIENT_DIR) fclean
+	$(RM) $(SERVER) $(CLIENT)
+
+re	:	fclean all
+
+.PHONY	:	all clean fclean re
+
 
 
