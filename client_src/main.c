@@ -1,5 +1,11 @@
 #include "../include/minitalk.h"
 
+void	puterr_exit(void)
+{
+	ft_putendl_fd("error", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
 void	send_char(pid_t pid, char c)
 {
 	int bit;
@@ -9,25 +15,20 @@ void	send_char(pid_t pid, char c)
 	i = 0;
 	while (i < 8)
 	{
+		usleep(100);
 		bit = (c >> i) & 1;
 		if (bit == 1)
-			err = kill(pid, SIGUSR1);
+		{
+			if (kill(pid, SIGUSR1) == -1)
+				puterr_exit();
+		}
 		else
-			err = kill(pid, SIGUSR2);
-		usleep(500);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+				puterr_exit();
+		}
 		i++;
 	}
-}
-
-size_t	record_strlen(char *str)
-{
-	static size_t	len;
-
-	if (str)
-	{
-		len = ft_strlen(str);
-	}
-	return (len);
 }
 
 void	send_message(pid_t server_pid, char **argv)
@@ -36,7 +37,6 @@ void	send_message(pid_t server_pid, char **argv)
 	char *str = argv[2];
 
 	i = 0;
-	record_strlen(str);
 	while (str[i])
 	{
 		send_char(server_pid, str[i]);
@@ -54,16 +54,7 @@ static void	print_client_pid(void)
 
 void	handler(pid_t signo)
 {
-	static int	cnt;
-
-	if (signo == SIGUSR1)
-	{
-		cnt++;
-		if (cnt == record_strlen(NULL))
-		{
-			ft_putendl_fd("Successfully sent message.", STDOUT_FILENO);
-		}
-	}
+	ft_putendl_fd("Successfully sent message.", STDOUT_FILENO);
 }
 
 void	receive_ack(void)
@@ -81,12 +72,19 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 	{
-		write(STDOUT_FILENO, "invalid argument\n", 17);
+		ft_putendl_fd("invalid arguments", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	receive_ack();
 	print_client_pid();
 	server_pid = ft_atoi(argv[1]);
 	send_message(server_pid, argv);
+	while (1)
+	{
+		if (sleep(5))
+			break ;
+		else
+			puterr_exit();
+	}
 	return (0);
 }
