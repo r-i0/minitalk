@@ -9,7 +9,7 @@ void	send_char(pid_t pid, char c)
 	i = 0;
 	while (i < 8)
 	{
-		usleep(5);
+		usleep(50);
 		bit = (c >> i) & 1;
 		if (bit == 1)
 		{
