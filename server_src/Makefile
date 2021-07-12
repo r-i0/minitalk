@@ -1,6 +1,6 @@
 NAME	=	server
 
-SRC		=	main.c
+SRC		=	main.c receive_bit.c
 OBJ		=	$(SRC:.c=.o)
 
 INCLUDE	=	../include/

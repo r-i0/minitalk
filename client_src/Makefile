@@ -1,6 +1,6 @@
 NAME	=	client
 
-SRC		=	main.c
+SRC		=	main.c send_message.c
 OBJ		=	$(SRC:.c=.o)
 
 INCLUDE	=	../include/
