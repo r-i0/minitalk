@@ -1,4 +1,4 @@
-#include "../include/minitalk.h"
+#include "../include/minitalk_bonus.h"
 
 void	send_char(pid_t pid, char c)
 {

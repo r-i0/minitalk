@@ -1,12 +1,14 @@
 NAME	=	client
 
 SRC		=	main.c send_message.c
+B_SRC	=	main_bonus.c send_message_bonus.c
 OBJ		=	$(SRC:.c=.o)
+B_OBJ	=	${B_SRC:.c=.o}
 
 INCLUDE	=	../include/
 
 CC		=	gcc
-CFLAGFS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
 RM		=	rm -rf
 
 LIBFT_DIR	=	../libft/
@@ -25,12 +27,14 @@ $(LIBFT) :
 
 clean :
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) $(B_OBJ)
 
 fclean	:
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(OBJ) $(NAME)
+	$(RM) $(OBJ) $(B_OBJ) $(NAME)
 
 re	:	fclean all
+
+bonus	:	$(NAME) $(B_OBJ)
 
 .PHONY	:	all clean fclean re

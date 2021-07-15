@@ -38,6 +38,12 @@ fclean	:
 
 re	:	fclean all
 
+bonus	:
+	$(MAKE) -C $(SERVER_DIR) bonus
+	$(MAKE) -C $(CLIENT_DIR) bonus
+	cp $(SERVER_DIR)/$(SERVER) ./
+	cp $(CLIENT_DIR)/$(CLIENT) ./
+
 .PHONY	:	all clean fclean re
 
 

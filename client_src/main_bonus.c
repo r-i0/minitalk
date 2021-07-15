@@ -1,4 +1,4 @@
-#include "../include/minitalk.h"
+#include "../include/minitalk_bonus.h"
 
 void	puterr_exit(void)
 {

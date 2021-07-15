@@ -1,7 +1,9 @@
 NAME	=	server
 
 SRC		=	main.c receive_bit.c
+B_SRC	=	main_bonus.c receive_bit_bonus.c	
 OBJ		=	$(SRC:.c=.o)
+B_OBJ	=	$(B_SRC:.c=.o)
 
 INCLUDE	=	../include/
 
@@ -25,12 +27,14 @@ $(LIBFT) :
 
 clean :
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) $(B_OBJ)
 
 fclean :
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(OBJ) $(NAME)
+	$(RM) $(OBJ) $(B_OBJ) $(NAME)
 
 re : fclean all
+
+bonus	:	$(NAME) $(B_OBJ)
 
 .PHONY : all clean fclean re
