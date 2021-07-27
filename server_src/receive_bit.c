@@ -1,6 +1,6 @@
 #include "../include/minitalk.h"
 
-void	print_message(char *buf, int j, pid_t client_pid)
+static void	print_message(char *buf, int j, pid_t client_pid)
 {
 	ft_putstr_fd(buf, STDOUT_FILENO);
 	if (buf[j] == EOT)
@@ -9,7 +9,6 @@ void	print_message(char *buf, int j, pid_t client_pid)
 		usleep(100);
 		kill(client_pid, SIGUSR1);
 	}
-	(void)client_pid;
 }
 
 void	receive_bit(int bit, pid_t client_pid)

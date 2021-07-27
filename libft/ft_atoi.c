@@ -1,62 +1,40 @@
 #include "libft.h"
 
-static int	cnt_space(const char *str)
+int	error_check(long num, const char *str, int negative, int i)
 {
-	int	i;
+	long	real_num;
 
-	i = 0;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\r'
-		|| str[i] == '\n' || str[i] == '\v' || str[i] == '\f')
-		i++;
-	return (i);
+	real_num = num * negative;
+	if (!ft_isdigit(str[i]) || (negative == 1 && real_num > INT_MAX)
+		|| (negative == -1 && real_num < INT_MIN))
+		return (0);
+	return (1);
 }
 
-static int	check_over(long num, const char *str, int i, int negative)
-{
-	long	ov_div;
-	long	p_ov_mod;
-	long	m_ov_mod;
-	long	n;
-
-	n = str[i] - '0';
-	ov_div = LONG_MAX / 10;
-	p_ov_mod = LONG_MAX % 10;
-	m_ov_mod = (LONG_MIN % 10) * -1;
-	if (num > ov_div && negative == 1)
-		return (1);
-	if (num > ov_div && negative == -1)
-		return (-1);
-	if (num == ov_div && n > p_ov_mod && negative == 1)
-		return (1);
-	if (num == ov_div && n > m_ov_mod && negative == -1)
-		return (-1);
-	return (0);
-}
-
-int	ft_atoi(const char *str)
+int	*ft_atoi(const char *str)
 {
 	int		i;
 	int		negative;
 	long	num;
+	int		*ret;
 
-	i = cnt_space(str);
+	i = -1;
 	num = 0;
 	negative = 1;
-	if (str[i] == '-' || str[i] == '+')
+	if (str[++i] == '-')
 	{
-		if (str[i] == '-')
-			negative = -1;
+		negative = -1;
 		i++;
 	}
-	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
+	while (str[i] != '\0')
 	{
-		if (check_over(num, str, i, negative) == 1)
-			return (-1);
-		if (check_over(num, str, i, negative) == -1)
-			return (0);
 		num *= 10;
 		num += str[i] - '0';
+		if (!error_check(num, str, negative, i))
+			return (NULL);
 		i++;
 	}
-	return ((int)num * negative);
+	i = (int)num * negative;
+	ret = &i;
+	return (ret);
 }

@@ -20,11 +20,11 @@ RM		=	rm -rf
 all	:	$(NAME)
 
 $(SERVER)	:	$(SERVER_DIR)
-	$(MAKE) -C $(SERVER_DIR)
+	@$(MAKE) -C $(SERVER_DIR)
 	cp $(SERVER_DIR)/$(SERVER) ./
 
 $(CLIENT)	:	$(CLIENT_DIR)
-	$(MAKE) -C $(CLIENT_DIR)
+	@$(MAKE) -C $(CLIENT_DIR)
 	cp $(CLIENT_DIR)/$(CLIENT) ./
 
 clean 	:

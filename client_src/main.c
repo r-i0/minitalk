@@ -13,39 +13,31 @@ static void	print_client_pid(void)
 	ft_putendl_fd("", STDOUT_FILENO);
 }
 
-static void	handler(pid_t signo)
+static int	get_server_pid(int argc, char **argv)
 {
-	if (signo == SIGUSR1)
-		ft_putendl_fd("Successfully sent message.", STDOUT_FILENO);
-}
+	int	*ret;
 
-static void	receive_ack(void)
-{
-	struct sigaction	act;
-
-	act.sa_handler = &handler;
-	sigemptyset(&act.sa_mask);//
-	sigaction(SIGUSR1, &act, NULL);
+	ret = NULL;
+	if (argc != 3)
+		return (1);
+	ret = ft_atoi(argv[1]);
+	if (ret)
+		return (*ret);
+	else
+		return (1);
 }
 
 int	main(int argc, char **argv)
 {
 	pid_t	server_pid;
 
-	server_pid = 0;
-	if (argc == 3)
-		server_pid = ft_atoi(argv[1]);
-	if (argc != 3 || kill(server_pid, 0) == -1)
+	server_pid = get_server_pid(argc, argv);
+	if (kill(server_pid, 0) == -1)
 		puterr_exit();
 	receive_ack();
 	print_client_pid();
 	send_message(server_pid, argv);
-	while (1)
-	{
-		if (sleep(5))
-			break ;
-		else
-			puterr_exit();
-	}
+	if (!sleep(5))
+		puterr_exit();
 	return (0);
 }

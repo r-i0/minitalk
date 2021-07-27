@@ -1,5 +1,11 @@
 #include "../include/minitalk.h"
 
+void	puterr_exit(void)
+{
+	ft_putendl_fd("error", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
 static void	action(int signo, siginfo_t *info, void *c)
 {
 	static pid_t	pid;
@@ -26,11 +32,13 @@ static void	set_signal(void)
 {
 	struct sigaction	act;
 
+	ft_memset(&act, 0, sizeof(act));
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &action;
 	sigemptyset(&act.sa_mask);
-	sigaction(SIGUSR1, &act, NULL);
-	sigaction(SIGUSR2, &act, NULL);
+	if (sigaction(SIGUSR1, &act, NULL) == -1
+		|| sigaction(SIGUSR2, &act, NULL) == -1)
+		puterr_exit();
 }
 
 static void	print_pid(void)
@@ -40,14 +48,8 @@ static void	print_pid(void)
 	ft_putendl_fd("", STDOUT_FILENO);
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	(void)argv;
-	if (argc != 1)
-	{
-		ft_putendl_fd("invalid arguments", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
 	set_signal();
 	print_pid();
 	while (1)

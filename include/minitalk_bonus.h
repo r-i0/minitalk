@@ -1,5 +1,5 @@
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 # define EOT 0x4
 # include <limits.h>
 # include <stdio.h>
@@ -16,8 +16,8 @@ void	send_char(pid_t pid, char c);
 // client main.c
 void	puterr_exit(void);
 
-// receive_bit.c
-void	print_message(char *buf, int j, pid_t client_pid);
+void	receive_ack(void);
+
 void	receive_bit(int bit, pid_t client_pid);
 
 #endif

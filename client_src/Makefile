@@ -1,7 +1,7 @@
 NAME	=	client
 
-SRC		=	main.c send_message.c
-B_SRC	=	main_bonus.c send_message_bonus.c
+SRC		=	main.c send_message.c receive_ack.c
+B_SRC	=	main_bonus.c send_message_bonus.c receive_ack_bonus.c
 OBJ		=	$(SRC:.c=.o)
 B_OBJ	=	${B_SRC:.c=.o}
 

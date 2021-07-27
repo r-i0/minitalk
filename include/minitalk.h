@@ -16,8 +16,10 @@ void	send_char(pid_t pid, char c);
 // client main.c
 void	puterr_exit(void);
 
+void	receive_ack(void);
+
 // receive_bit.c
-void	print_message(char *buf, int j, pid_t client_pid);
+// void	print_message(char *buf, int j, pid_t client_pid);
 void	receive_bit(int bit, pid_t client_pid);
 
 #endif
