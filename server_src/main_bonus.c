@@ -32,6 +32,7 @@ static void	set_signal(void)
 {
 	struct sigaction	act;
 
+	ft_memset(&act, 0, sizeof(act));
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &action;
 	sigemptyset(&act.sa_mask);

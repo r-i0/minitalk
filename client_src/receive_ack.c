@@ -10,6 +10,7 @@ void	receive_ack(void)
 {
 	struct sigaction	act;
 
+	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = &handler;
 	sigemptyset(&act.sa_mask);
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
