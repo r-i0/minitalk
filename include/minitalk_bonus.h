@@ -9,15 +9,10 @@
 # include <stdlib.h>
 # include "../libft/libft.h"
 
-// send_message.c
 void	send_message(pid_t server_pid, char **argv);
 void	send_char(pid_t pid, char c);
-
-// client main.c
 void	puterr_exit(void);
-
 void	receive_ack(void);
-
 void	receive_bit(int bit, pid_t client_pid);
 
 #endif

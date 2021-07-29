@@ -1,6 +1,6 @@
 #include "../include/minitalk_bonus.h"
 
-void	print_message(char *buf, int j, pid_t client_pid)
+static void	print_message(char *buf, int j, pid_t client_pid)
 {
 	ft_putstr_fd(buf, STDOUT_FILENO);
 	if (buf[j] == EOT)
